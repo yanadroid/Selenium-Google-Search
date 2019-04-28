@@ -1,6 +1,6 @@
 package pages;
 
-import logger.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,7 +9,9 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import static logger.Logger.*;
+import java.util.List;
+
+import static logger.Logger.log;
 
 public class GoogleSearchPage {
 
@@ -17,48 +19,47 @@ public class GoogleSearchPage {
     private WebElement nextPage;
     @FindBy(name = "q")
     private WebElement search;
-    @FindBy(linkText = "testautomationday.com")
-    private WebElement automationLink;
-    @FindBy(xpath = "//*[contains(text(), 'Automation')]")
+    @FindBy(xpath = "//*[text() = 'Automation']")
     private WebElement title;
-    @FindBy(className = "sA5rQ")
-    private WebElement firstLink;
+    @FindBy(xpath = "(//h3)[1]")
+    private WebElement link;
 
     private WebDriver driver;
 
-    public GoogleSearchPage(WebDriver driver) {
+    public GoogleSearchPage(WebDriver driver, String link) {
         PageFactory.initElements(driver, this);
         this.driver = driver;
+        openLink(link);
     }
 
-    public GoogleSearchPage openLink(String link) {
+    private void openLink(String link) {
         driver.get(link);
-        log(driver, "Open URL: " + link);
-        return this;
     }
 
-    public GoogleSearchPage sendKeys(String key) {
+    public void sendKeys(String key) {
+        search.clear();
         search.sendKeys(key);
         search.sendKeys(Keys.RETURN);
-        log(driver, "Send Key: " + key);
-        return this;
     }
 
     public void searchSpecificAutomationTitle() {
-        log(driver, "Started method searchSpecificAutomationTitle()");
-        firstLink.click();
+        link.click();
         title.isDisplayed();
     }
 
-    public void searchLinkOnPages(String link) {
+    public String searchLinkOnPages(String link) {
+        boolean isFound = false;
         for (int i = 0; i < 5; i++) {
-            if (driver.getPageSource().contains(link)) {
-                log(driver, "Link was found succesfully");
-                return;
-            } else {
-                waitElement(nextPage).click();
+            List<WebElement> allLinks = driver.findElements(By.tagName("cite"));
+            for (WebElement element : allLinks) {
+                if (element.getText().equals(link)){
+                    log("Link was found successfully.");
+                    return element.getText();
+                }
             }
+            waitElement(nextPage).click();
         }
+        return null;
     }
 
     private WebElement waitElement(WebElement element) {

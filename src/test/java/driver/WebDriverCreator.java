@@ -1,29 +1,29 @@
-package tests;
+package driver;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeMethod;
 
-import java.awt.*;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class BaseTest {
+public class WebDriverCreator {
 
-    private List<WebDriver> drivers = new LinkedList<WebDriver>();
+    private static WebDriverCreator instance;
+    private List<WebDriver> drivers = new LinkedList<>();
 
-    @AfterClass
-    public void quitDrivers() {
-        Iterator<WebDriver> iterator = drivers.iterator();
-        while (iterator.hasNext()) {
-            WebDriver driver = iterator.next();
-            driver.quit();
-            iterator.remove();
+    private WebDriverCreator() { }
+
+    public static void init() {
+        if (instance == null) {
+            instance = new WebDriverCreator();
         }
+    }
+
+    public static WebDriverCreator get() {
+        return instance;
     }
 
     public WebDriver getDriver() {
@@ -34,5 +34,14 @@ public class BaseTest {
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         return driver;
+    }
+
+    public void quitDrivers() {
+        Iterator<WebDriver> iterator = drivers.iterator();
+        while (iterator.hasNext()) {
+            WebDriver driver = iterator.next();
+            driver.quit();
+            iterator.remove();
+        }
     }
 }
