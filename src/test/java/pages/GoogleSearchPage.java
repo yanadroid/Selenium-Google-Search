@@ -48,7 +48,6 @@ public class GoogleSearchPage {
     }
 
     public String searchLinkOnPages(String link) {
-        boolean isFound = false;
         for (int i = 0; i < 5; i++) {
             List<WebElement> allLinks = driver.findElements(By.tagName("cite"));
             for (WebElement element : allLinks) {
