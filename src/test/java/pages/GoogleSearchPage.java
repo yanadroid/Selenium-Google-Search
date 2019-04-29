@@ -27,8 +27,8 @@ public class GoogleSearchPage {
     private WebDriver driver;
 
     public GoogleSearchPage(WebDriver driver, String link) {
-        PageFactory.initElements(driver, this);
         this.driver = driver;
+        PageFactory.initElements(driver, this);
         openLink(link);
     }
 
