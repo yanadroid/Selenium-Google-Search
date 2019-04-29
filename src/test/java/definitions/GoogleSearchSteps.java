@@ -14,14 +14,9 @@ public class GoogleSearchSteps {
 
     private GoogleSearchPage page;
 
-    @Given("Open URL: {string}")
-    public void openLink(String link) {
-        page = new GoogleSearchPage(get().getDriver(), link);
-    }
-
-    @When("We send a word {string} to Google Search and click Enter.")
-    public void sendKeyToGoogleSearch(String key) {
-        page.sendKeys(key);
+    @Given("Open URL: {string} and send {string}")
+    public void openLink(String link, String key) {
+        page = new GoogleSearchPage(get().getDriver(), link, key);
     }
 
     @Then("We click on first link of result and see that a title on web page is Automation.")

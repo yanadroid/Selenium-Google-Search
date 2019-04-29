@@ -27,17 +27,18 @@ public class GoogleSearchPage {
     private WebDriver driver;
     private WebElement linkElement;
 
-    public GoogleSearchPage(WebDriver driver, String link) {
+    public GoogleSearchPage(WebDriver driver, String link, String key) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
         openLink(link);
+        sendKeys(key);
     }
 
     private void openLink(String link) {
         driver.get(link);
     }
 
-    public void sendKeys(String key) {
+    private void sendKeys(String key) {
         search.clear();
         search.sendKeys(key);
         search.sendKeys(Keys.RETURN);

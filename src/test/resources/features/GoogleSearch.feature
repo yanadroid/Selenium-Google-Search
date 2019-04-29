@@ -1,8 +1,7 @@
   Feature: Google Search
 
     Background:
-      Given Open URL: "http://www.google.com"
-      When We send a word "Automation" to Google Search and click Enter.
+      Given Open URL: "http://www.google.com" and send "Automation"
 
     @SearchAutomationTitle
     Scenario: Search title "Automation" when open first link of search results
