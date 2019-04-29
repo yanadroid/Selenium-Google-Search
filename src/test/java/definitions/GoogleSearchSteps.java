@@ -3,10 +3,11 @@ package definitions;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.testng.Assert;
 import pages.GoogleSearchPage;
 
 import static driver.WebDriverCreator.get;
-import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.*;
 
 
 public class GoogleSearchSteps {
@@ -26,11 +27,12 @@ public class GoogleSearchSteps {
     @Then("We click on first link of result and see that a title on web page is Automation.")
     public void resultTitleFromFirstClickedLink() {
         page.searchSpecificAutomationTitle();
+        assertTrue(page.getTitleElement().isDisplayed());
     }
 
     @Then("We found that this link {string} is available on Google page result.")
     public void foundedLinkOnPage(String link) {
-        String actual = page.searchLinkOnPages(link);
-        assertEquals(link, actual);
+        page.searchLinkOnPages(link);
+        assertEquals(link, page.getLinkElement().getText());
     }
 }

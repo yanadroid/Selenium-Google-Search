@@ -8,10 +8,13 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static logger.Logger.log;
+import static org.testng.Assert.*;
 
 public class GoogleSearchPage {
 
@@ -25,6 +28,7 @@ public class GoogleSearchPage {
     private WebElement link;
 
     private WebDriver driver;
+    private WebElement linkElement;
 
     public GoogleSearchPage(WebDriver driver, String link) {
         this.driver = driver;
@@ -44,23 +48,29 @@ public class GoogleSearchPage {
 
     public void searchSpecificAutomationTitle() {
         link.click();
-        title.isDisplayed();
     }
 
-    public String searchLinkOnPages(String link) {
+    public void searchLinkOnPages(String link) {
         for (int i = 0; i < 5; i++) {
             List<WebElement> allLinks = driver.findElements(By.tagName("cite"));
             for (WebElement element : allLinks) {
                 if (element.getText().equals(link)){
                     log("Link was found successfully.");
-                    return element.getText();
+                    linkElement = element;
+                    return;
                 }
             }
             waitElement(nextPage).click();
         }
-        return null;
     }
 
+    public WebElement getLinkElement() {
+        return linkElement;
+    }
+
+    public WebElement getTitleElement() {
+        return title;
+    }
     private WebElement waitElement(WebElement element) {
         WebDriverWait wait = new WebDriverWait(driver, 5000);
         wait.until(ExpectedConditions.visibilityOf(element));
