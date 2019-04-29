@@ -3,11 +3,11 @@ package definitions;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.testng.Assert;
 import pages.GoogleSearchPage;
 
 import static driver.WebDriverCreator.get;
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 
 public class GoogleSearchSteps {
