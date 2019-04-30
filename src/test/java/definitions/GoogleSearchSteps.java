@@ -2,32 +2,38 @@ package definitions;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+import logger.Logger;
 import pages.GoogleSearchPage;
 
 import static driver.WebDriverCreator.get;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static logger.Logger.*;
+import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
+import static org.testng.Assert.*;
 
 
 public class GoogleSearchSteps {
 
     private GoogleSearchPage page;
 
-    @Given("Open URL: {string} and send {string}")
-    public void openLink(String link, String key) {
-        page = new GoogleSearchPage(get().getDriver(), link, key);
+    @Given("Open URL: {string}.")
+    public void openLink(String link) {
+        log("Open web page.");
+        page = new GoogleSearchPage(get().getDriver(), link);
     }
 
-    @Then("We click on first link of result and see that a title on web page is Automation.")
-    public void resultTitleFromFirstClickedLink() {
-        page.searchSpecificAutomationTitle();
-        assertTrue(page.getTitleElement().isDisplayed());
+    @Then("Click on first link of result and see that a title on web page is {string}.")
+    public void resultTitleFromFirstClickedLink(String key) {
+        log("Start resultTitleFromFirstClickedLink() method.");
+        page.searchForKeyword(key);
+        assertNotNull(page.getTitle());
+        assertTrue(containsIgnoreCase(page.getTitle(), key));
     }
 
-    @Then("We found that this link {string} is available on Google page result.")
-    public void foundedLinkOnPage(String link) {
-        page.searchLinkOnPages(link);
+    @Then("Send {string} and found that this link {string} is available on first {int} pages.")
+    public void searchLinkOnPage(String key, String link, int pages) {
+        log("Start searchLinkOnPage() method.");
+        page.searchLinkOnPages(key, pages, link);
+        assertNotNull(page.getLinkElement());
         assertEquals(link, page.getLinkElement().getText());
     }
 }

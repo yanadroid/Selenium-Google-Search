@@ -6,11 +6,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
+import static driver.WaiterExpectedConditions.waitElement;
+import static driver.WebDriverConstants.*;
 import static logger.Logger.log;
 
 public class GoogleSearchPage {
@@ -19,19 +19,16 @@ public class GoogleSearchPage {
     private WebElement nextPage;
     @FindBy(name = "q")
     private WebElement search;
-    @FindBy(xpath = "//*[text() = 'Automation']")
-    private WebElement title;
     @FindBy(xpath = "(//h3)[1]")
     private WebElement link;
 
     private WebDriver driver;
     private WebElement linkElement;
 
-    public GoogleSearchPage(WebDriver driver, String link, String key) {
+    public GoogleSearchPage(WebDriver driver, String link) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
         openLink(link);
-        sendKeys(key);
     }
 
     private void openLink(String link) {
@@ -39,26 +36,30 @@ public class GoogleSearchPage {
     }
 
     private void sendKeys(String key) {
+        log("Send key: " + key);
         search.clear();
         search.sendKeys(key);
         search.sendKeys(Keys.RETURN);
     }
 
-    public void searchSpecificAutomationTitle() {
+    public void searchForKeyword(String key) {
+        log("Start searchForKeyword() method.");
+        sendKeys(key);
         link.click();
     }
 
-    public void searchLinkOnPages(String link) {
-        for (int i = 0; i < 5; i++) {
-            List<WebElement> allLinks = driver.findElements(By.tagName("cite"));
+    public void searchLinkOnPages(String key, int pages, String link) {
+        sendKeys(key);
+        for (int i = 0; i < pages; i++) {
+            List<WebElement> allLinks = driver.findElements(By.tagName(KEY_TAG_NAME));
             for (WebElement element : allLinks) {
                 if (element.getText().equals(link)){
-                    log("Link was found successfully.");
                     linkElement = element;
+                    log("Link was found successfully.");
                     return;
                 }
             }
-            waitElement(nextPage).click();
+            waitElement(driver, nextPage, KEY_TIME_WAIT).click();
         }
     }
 
@@ -66,12 +67,7 @@ public class GoogleSearchPage {
         return linkElement;
     }
 
-    public WebElement getTitleElement() {
-        return title;
-    }
-    private WebElement waitElement(WebElement element) {
-        WebDriverWait wait = new WebDriverWait(driver, 5000);
-        wait.until(ExpectedConditions.visibilityOf(element));
-        return element;
+    public String getTitle() {
+        return driver.getTitle();
     }
 }
