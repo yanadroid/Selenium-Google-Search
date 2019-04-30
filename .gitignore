@@ -3,5 +3,4 @@
 .settings/
 target/
 .idea/
-/target/generated-test-sources
-/target/test-classes
+
