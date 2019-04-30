@@ -10,7 +10,6 @@ import org.openqa.selenium.support.PageFactory;
 import java.util.List;
 
 import static driver.WaiterExpectedConditions.waitElement;
-import static driver.WebDriverConstants.*;
 import static logger.Logger.log;
 
 public class GoogleSearchPage {
@@ -24,6 +23,9 @@ public class GoogleSearchPage {
 
     private WebDriver driver;
     private WebElement linkElement;
+
+    private final static String KEY_TAG_NAME = "cite";
+    private final static long KEY_TIME_WAIT = 5000;
 
     public GoogleSearchPage(WebDriver driver, String link) {
         this.driver = driver;
