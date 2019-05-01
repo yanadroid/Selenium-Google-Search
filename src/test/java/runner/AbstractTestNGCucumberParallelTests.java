@@ -3,12 +3,11 @@ package runner;
 import cucumber.api.testng.AbstractTestNGCucumberTests;
 import driver.WebDriverCreator;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import logger.Logger;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 
-import static logger.Logger.*;
+import static logger.Logger.log;
 
 public class AbstractTestNGCucumberParallelTests extends AbstractTestNGCucumberTests {
 

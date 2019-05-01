@@ -2,11 +2,10 @@ package definitions;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
-import logger.Logger;
 import pages.GoogleSearchPage;
 
 import static driver.WebDriverCreator.get;
-import static logger.Logger.*;
+import static logger.Logger.log;
 import static org.apache.commons.lang3.StringUtils.containsIgnoreCase;
 import static org.testng.Assert.*;
 
