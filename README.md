@@ -8,6 +8,7 @@
 
 > <br>Added Cucumber BDD and Reporting</br>
 > <br>Added Screenshots</br>
+> <br>Added Log4j</br>
 > <br>Parallelization: Cucumber + TestNG with two instances of Google Chrome <br/>
 > <br>Webdriver Pattern: Page Object <br/>
 > <br>Dependency resolution: Maven <br/>
