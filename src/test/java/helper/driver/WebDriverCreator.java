@@ -1,28 +1,28 @@
-package driver;
+package helper.driver;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
 
 public class WebDriverCreator {
 
     private static WebDriverCreator instance;
-    private List<WebDriver> drivers = new LinkedList<>();
+    private static List<WebDriver> drivers = new ArrayList<>();
+    private static final long KEY_GLOBAL_IMPLICITlY_WAIT = 10000;
+
 
     private WebDriverCreator() { }
 
-    public static void init() {
+    public static WebDriverCreator get() {
         if (instance == null) {
             instance = new WebDriverCreator();
         }
-    }
-
-    public static WebDriverCreator get() {
         return instance;
     }
 
@@ -30,10 +30,13 @@ public class WebDriverCreator {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("disable-infobars");
         WebDriver driver = new ChromeDriver(options);
-        drivers.add(driver);
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(KEY_GLOBAL_IMPLICITlY_WAIT, TimeUnit.MILLISECONDS);
         return driver;
+    }
+
+    public void addDriverCollection(WebDriver driver) {
+        drivers.add(driver);
     }
 
     public void quitDrivers() {
